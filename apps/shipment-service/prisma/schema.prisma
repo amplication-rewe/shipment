@@ -1,0 +1,58 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model PackageModel {
+  contents   String?
+  createdAt  DateTime   @default(now())
+  dimensions String?
+  id         String     @id @default(cuid())
+  shipments  Shipment[]
+  updatedAt  DateTime   @updatedAt
+  weight     Float?
+}
+
+model Carrier {
+  contactNumber String?
+  createdAt     DateTime   @default(now())
+  email         String?
+  id            String     @id @default(cuid())
+  name          String?
+  shipments     Shipment[]
+  updatedAt     DateTime   @updatedAt
+}
+
+model Destination {
+  city       String?
+  country    String?
+  createdAt  DateTime   @default(now())
+  id         String     @id @default(cuid())
+  postalCode String?
+  shipments  Shipment[]
+  state      String?
+  updatedAt  DateTime   @updatedAt
+}
+
+model Shipment {
+  carrier        Carrier?            @relation(fields: [carrierId], references: [id])
+  carrierId      String?
+  createdAt      DateTime            @default(now())
+  destination    Destination?        @relation(fields: [destinationId], references: [id])
+  destinationId  String?
+  id             String              @id @default(cuid())
+  packageModel   PackageModel?       @relation(fields: [packageModelId], references: [id])
+  packageModelId String?
+  shippingDate   DateTime?
+  status         EnumShipmentStatus?
+  trackingNumber String?
+  updatedAt      DateTime            @updatedAt
+}
+
+enum EnumShipmentStatus {
+  Option1
+}
