@@ -40,22 +40,6 @@ module "ecs_service_shipment-service" {
       }
 
       memory_reservation = 100
-    },
-    {
-      name      = "shipment-service-migrate"
-      essential = false
-      cpu       = 512
-      memory    = 1024
-      image     = module.ecr_shipment-service.repository_url
-      command   = ["prisma", "migrate", "deploy"]
-      log_configuration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group         = "/ecs/shipment-service"
-          awslogs-region        = local.region
-          awslogs-stream-prefix = "ecs"
-        }
-      }
     }
   ]
 
