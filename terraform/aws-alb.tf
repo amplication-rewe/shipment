@@ -3,7 +3,7 @@ module "ecs_alb_sg_shipment-service" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.0"
 
-  name   = "shipment-service"
+  name   = "shipment-service-alb"
   vpc_id = module.vpc.vpc_id
 
   ingress_rules       = ["http-80-tcp"]
